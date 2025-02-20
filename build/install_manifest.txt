@@ -1,0 +1,12 @@
+/home/jryu/EIC/TB2024/install/lib/libdrcTB.so
+/home/jryu/EIC/TB2024/install/include/TBconfig.h
+/home/jryu/EIC/TB2024/install/include/TBdetector.h
+/home/jryu/EIC/TB2024/install/include/TBevt.h
+/home/jryu/EIC/TB2024/install/include/TBmid.h
+/home/jryu/EIC/TB2024/install/include/TBmonit.h
+/home/jryu/EIC/TB2024/install/include/TBobject.h
+/home/jryu/EIC/TB2024/install/include/TBplotengine.h
+/home/jryu/EIC/TB2024/install/include/TBread.h
+/home/jryu/EIC/TB2024/install/include/TButility.h
+/home/jryu/EIC/TB2024/install/lib/libdrcTB_rdict.pcm
+/home/jryu/EIC/TB2024/install/lib/libdrcTB.rootmap
