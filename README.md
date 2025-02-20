@@ -1,5 +1,5 @@
-d# BIC_TB
-
+# BIC_TB
+Forked from KYHWANG's DRC_TB codes
 Package for Offline TB 2025 Analysis
 
 ## Dependencies
