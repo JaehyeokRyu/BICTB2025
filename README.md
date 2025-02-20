@@ -12,7 +12,7 @@ All the dependencies can be sourced from CVMFS automatically by running compile 
 
 ## How to compile the package (required only once)
 - Scripts for UBUNTU is prepared.
-
+source buildNinstall.sh
 
 ## How to compile the analysis scripts
 **Caution) Works only after compiling the package or setting up the environment**
