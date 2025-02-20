@@ -24,8 +24,6 @@
 #include <sys/sysinfo.h>
 #include <unistd.h>
 
-// ======================================================================
-// 생성자: 설정 파일 경로와 Run 번호를 인자로 받는 생성자
 template <typename T>
 TBmonit<T>::TBmonit(const std::string &fConfig_, int fRunNum_)
   : fConfig(TBconfig(fConfig_)), fRunNum(fRunNum_), fMaxEvent(-1), fMaxFile(-1), fObj(nullptr)
@@ -35,9 +33,6 @@ TBmonit<T>::TBmonit(const std::string &fConfig_, int fRunNum_)
     fUtility = TButility();
 }
 
-// ======================================================================
-// 생성자: ObjectCollection*를 인자로 받는 생성자 (main에서 사용)
-// YAML 파일("./config_general.yml")을 기본으로 사용하며, fObj로부터 실행 변수들을 읽어옴.
 template <typename T>
 TBmonit<T>::TBmonit(ObjectCollection* fObj_)
   : fObj(fObj_), fConfig(TBconfig("./config_general.yml"))
@@ -66,8 +61,6 @@ TBmonit<T>::TBmonit(ObjectCollection* fObj_)
     }
 }
 
-// ======================================================================
-// GetFormattedRamInfo(): Linux용 메모리 사용 정보를 sysinfo()로 출력
 template <typename T>
 void TBmonit<T>::GetFormattedRamInfo() {
     struct sysinfo memInfo;
@@ -78,8 +71,6 @@ void TBmonit<T>::GetFormattedRamInfo() {
     printf("%.1f GB / %.1f GB (%.2f %%)", used_memory_GB, total_memory_GB, (used_memory_GB / total_memory_GB * 100.0));
 }
 
-// ======================================================================
-// Loop(): 라이브 모드면 LoopLive(), 아니면 LoopAfterRun() 호출
 template <typename T>
 void TBmonit<T>::Loop() {
     if (fIsLive)
@@ -88,14 +79,11 @@ void TBmonit<T>::Loop() {
         LoopAfterRun();
 }
 
-// ======================================================================
-// LoopLive(): 라이브 데이터를 읽으며 실시간으로 화면 출력 또는 처리
 template <typename T>
 void TBmonit<T>::LoopLive() {
     ANSI_CODE ANSI = ANSI_CODE();
     TBplotengine fPlotter = TBplotengine(fConfig.GetConfig()["ModuleConfig"], fRunNum, fIsLive, fUtility);
 
-    // 실행 모드("type")와 처리 방법("method")를 fObj에서 읽어옴
     std::string aCase;
     fObj->GetVariable("type", &aCase);
     if (aCase == "null")
@@ -110,7 +98,6 @@ void TBmonit<T>::LoopLive() {
     else
         fPlotter.SetMethod(aMethod);
 
-    // 'single' 모드라면 module 리스트가 반드시 있어야 하며, CID로 변환 후 fPlotter에 설정
     if (aCase == "single") {
         std::vector<std::string> aModules;
         fObj->GetVector("module", &aModules);
@@ -124,7 +111,7 @@ void TBmonit<T>::LoopLive() {
             fPlotter.SetCID(aCID);
         }
     }
-    // heatmap 모드인 경우 module은 반드시 1개여야 함
+
     else if (aCase == "heatmap") {
         std::vector<std::string> aModules;
         fObj->GetVector("module", &aModules);
@@ -166,7 +153,7 @@ void TBmonit<T>::LoopLive() {
                 GetFormattedRamInfo();
                 std::cout << ANSI.END << std::endl;
             }
-            // 이벤트를 읽어 fPlotter에 전달
+
             TBevt<TBwaveform> aEvent;
             fPlotter.Fill(readerWave.GetAnEvent());
         }
@@ -174,14 +161,12 @@ void TBmonit<T>::LoopLive() {
     }
 }
 
-// ======================================================================
-// LoopAfterRun(): 데이터 수집 완료 후, 파일을 읽어 처리하고 결과를 저장
 template <typename T>
 void TBmonit<T>::LoopAfterRun() {
     ANSI_CODE ANSI = ANSI_CODE();
     TBplotengine fPlotter = TBplotengine(fConfig.GetConfig()["ModuleConfig"], fRunNum, fIsLive, fUtility);
 
-    // 실행 모드("type")와 처리 방법("method")를 fObj에서 읽어옴
+
     std::string aCase;
     fObj->GetVariable("type", &aCase);
     if (aCase == "null")
@@ -196,7 +181,7 @@ void TBmonit<T>::LoopAfterRun() {
     else
         fPlotter.SetMethod(aMethod);
 
-    // 'single' 모드라면 module 리스트 체크 후 CID 설정
+
     if (aCase == "single") {
         std::vector<std::string> aModules;
         fObj->GetVector("module", &aModules);
@@ -210,7 +195,7 @@ void TBmonit<T>::LoopAfterRun() {
             fPlotter.SetCID(aCID);
         }
     }
-    // heatmap 모드인 경우 버전 정보를 통해 설정
+
     else if (aCase == "heatmap") {
         std::string str_version = "";
         fObj->GetVariable("version", &str_version);
@@ -258,7 +243,6 @@ void TBmonit<T>::LoopAfterRun() {
     fPlotter.SaveAs("DQM_Run" + std::to_string(fRunNum) + ".root");
 }
 
-// ======================================================================
-// 템플릿 클래스의 명시적 인스턴스화
+
 template class TBmonit<TBwaveform>;
 template class TBmonit<TBfastmode>;
