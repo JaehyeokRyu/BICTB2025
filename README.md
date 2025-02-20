@@ -18,6 +18,6 @@ All the dependencies can be sourced from CVMFS automatically by running compile 
 **Caution) Works only after compiling the package or setting up the environment**
 
 - cd analysis
-- ./compile.sh "analysis code in cpp"
+- ./compile.sh [analysis code in cpp]
 
 
