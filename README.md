@@ -17,7 +17,7 @@ All the dependencies can be sourced from CVMFS automatically by running compile 
 ## How to compile the analysis scripts
 **Caution) Works only after compiling the package or setting up the environment**
 
-cd analysis
-./compile_<your OS> <analysis code in cpp>
+- cd analysis
+- ./compile_<your OS> <analysis code in cpp>
 
-e.g.) ./compile_centos.sh TBanalysis_ex
+- e.g.) ./compile_centos.sh TBanalysis_ex
